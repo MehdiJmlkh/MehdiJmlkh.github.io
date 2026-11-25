@@ -5,32 +5,145 @@ permalink: /publications/
 author_profile: true
 ---
 
-{% if site.author.googlescholar %}
-  <div class="wordwrap">You can also find my articles on <a href="{{site.author.googlescholar}}">my Google Scholar profile</a>.</div>
-{% endif %}
+<style>
+  .publications-list {
+    margin-top: 1.5rem;
+  }
 
-{% include base_path %}
+  .publication-category {
+    margin-top: 2rem;
+    margin-bottom: 1.2rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
 
-<!-- New style rendering if publication categories are defined -->
+  .publication-item {
+    margin-bottom: 1.8rem;
+  }
+
+  .publication-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin: 0 0 0.35rem 0;
+  }
+
+  .publication-title a {
+    color: #245a81;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .publication-title a:hover {
+    color: #163d5c;
+    text-decoration: underline;
+  }
+
+  .publication-authors {
+    color: #444;
+    font-size: 0.92rem;
+    margin: 0 0 0.25rem 0;
+    line-height: 1.5;
+  }
+
+  .publication-venue {
+    color: #666;
+    font-size: 0.88rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+</style>
+
+<div class="publications-list">
+
 {% if site.publication_category %}
-  {% for category in site.publication_category  %}
+
+  {% for category in site.publication_category %}
     {% assign title_shown = false %}
+
     {% for post in site.publications reversed %}
       {% if post.category != category[0] %}
         {% continue %}
       {% endif %}
+
       {% unless title_shown %}
-        <h2>{{ category[1].title }}</h2><hr />
+        <h2 class="publication-category">{{ category[1].title }}</h2>
         {% assign title_shown = true %}
       {% endunless %}
-      {% include archive-single.html %}
+
+      <div class="publication-item">
+        <h3 class="publication-title">
+          {% if post.paperurl %}
+            <a href="{{ post.paperurl }}" target="_blank" rel="noopener">
+              {{ post.title }}
+            </a>
+          {% elsif post.link %}
+            <a href="{{ post.link }}" target="_blank" rel="noopener">
+              {{ post.title }}
+            </a>
+          {% else %}
+            <a href="{{ post.url | prepend: site.baseurl }}">
+              {{ post.title }}
+            </a>
+          {% endif %}
+        </h3>
+
+        {% if post.authors %}
+          <p class="publication-authors">{{ post.authors }}</p>
+        {% endif %}
+
+        {% if post.venue %}
+          <p class="publication-venue">
+            <em>{{ post.venue }}</em>{% if post.date %}, {{ post.date | date: "%Y" }}{% endif %}
+          </p>
+        {% elsif post.submitted %}
+          <p class="publication-venue">
+            Submitted to <em>{{ post.submitted }}</em>
+          </p>
+        {% endif %}
+      </div>
+
     {% endfor %}
   {% endfor %}
+
 {% else %}
+
   {% for post in site.publications reversed %}
-    {% include archive-single.html %}
+
+    <div class="publication-item">
+      <h3 class="publication-title">
+        {% if post.paperurl %}
+          <a href="{{ post.paperurl }}" target="_blank" rel="noopener">
+            {{ post.title }}
+          </a>
+        {% elsif post.link %}
+          <a href="{{ post.link }}" target="_blank" rel="noopener">
+            {{ post.title }}
+          </a>
+        {% else %}
+          <a href="{{ post.url | prepend: site.baseurl }}">
+            {{ post.title }}
+          </a>
+        {% endif %}
+      </h3>
+
+      {% if post.authors %}
+        <p class="publication-authors">{{ post.authors }}</p>
+      {% endif %}
+
+      {% if post.venue %}
+        <p class="publication-venue">
+          <em>{{ post.venue }}</em>{% if post.date %}, {{ post.date | date: "%Y" }}{% endif %}
+        </p>
+      {% elsif post.submitted %}
+        <p class="publication-venue">
+          Submitted to <em>{{ post.submitted }}</em>
+        </p>
+      {% endif %}
+    </div>
+
   {% endfor %}
+
 {% endif %}
 
-
-
+</div>

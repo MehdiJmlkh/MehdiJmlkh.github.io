@@ -399,3 +399,14 @@
   font-size: $type-size-6;
   text-transform: uppercase;
 }
+
+.page__content a {
+  color: #245a81;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.page__content a:hover {
+  color: #163d5c;
+  text-decoration: underline;
+}
